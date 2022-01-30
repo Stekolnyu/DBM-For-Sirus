@@ -1,0 +1,28 @@
+﻿## Interface: 30300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Lair|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Логово Крыла Тьмы|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMBWL_AllSavedVars
+## SavedVariablesPerCharacter: DBMBWL_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: Classic
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-No-Heroic: 1
+## X-DBM-Mod-Name: Blackwing Lair
+## X-DBM-Mod-Name-ruRU: Логово Крыла Тьмы
+## X-DBM-Mod-Sort: 401
+## X-DBM-Mod-LoadZone: Blackwing Lair
+## X-DBM-Mod-LoadZone-ruRU: Логово Крыла Тьмы
+
+localization.en.lua
+localization.ru.lua
+
+Razorgore.lua
+Vaelastrasz.lua
+Broodlord.lua
+Firemaw.lua
+Ebonroc.lua
+Flamegor.lua
+Chromaggus.lua
+Nefarian.lua

@@ -1,0 +1,30 @@
+﻿## Interface: 30300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Zul'Gurub|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Зул'Гуруб|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariables: DBMZG_AllSavedVars
+## SavedVariablesPerCharacter: DBMZG_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: Classic
+## X-DBM-Mod-Has-Single-Format: 1
+## X-DBM-Mod-No-Heroic: 1
+## X-DBM-Mod-Name: Zul'Gurub
+## X-DBM-Mod-Name-ruRU: Зул'Гуруб
+## X-DBM-Mod-Sort: 403
+## X-DBM-Mod-LoadZone: Nitram,Zul'Gurub
+## X-DBM-Mod-LoadZone-ruRU: Nitram,Зул'Гуруб
+
+localization.en.lua
+localization.ru.lua
+
+Venoxis.lua
+Jeklik.lua
+Marli.lua
+Thekal.lua
+Arlokk.lua
+Hakkar.lua
+Bloodlord.lua
+EdgeOfMadness.lua
+Gahzranka.lua
+Jindo.lua
