@@ -17,9 +17,6 @@
 ## X-DBM-Mod-LoadZone: Auchenai Crypts, Hellfire Ramparts, Mana-Tombs, The Blood Furnace, Underbog, The Steamvault, The Shattered Halls, Sethekk Halls, The Slave Pens, The Arcatraz, Shadow Labyrinth, The Botanica, The Mechanar, Old Hillsbrad Foothills, Magisters' Terrace, Black Morass
 ## X-DBM-Mod-LoadZone-ruRU: Аукенайские гробницы, Бастионы Адского Пламени, Гробницы Маны, Кузня Крови, Нижетопь, Паровое подземелье, Разрушенные залы, Сетеккские залы, Узилище, Аркатрац, Темный лабиринт, Ботаника, Механар, Старые предгорья Хилсбрада, Терраса Магистров, Черные топи
 
-localization.en.lua
-localization.ru.lua
-
 Hellfire_Ramparts\HRTrash.lua
 Hellfire_Ramparts\Omor.lua
 Hellfire_Ramparts\Vazruden.lua
@@ -54,3 +51,6 @@ Coil_Underbog\Ghazan.lua
 Coil_Underbog\Hungarfen.lua
 Coil_Underbog\Muselek.lua
 Coil_Underbog\UTrash.lua
+
+localization.en.lua
+localization.ru.lua

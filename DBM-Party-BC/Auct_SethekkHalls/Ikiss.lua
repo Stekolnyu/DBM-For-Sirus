@@ -2,8 +2,6 @@ local mod	= DBM:NewMod("Ikiss", "DBM-Party-BC", 8)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 2250 $"):sub(12, -3))
-mod:SetCreatureID(18473)
-mod:SetZone()
 
 mod:RegisterCombat("combat", 18473)
 
