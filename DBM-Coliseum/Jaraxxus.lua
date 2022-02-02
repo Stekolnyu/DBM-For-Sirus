@@ -164,6 +164,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66532, 66963, 66964, 66965) then		-- Fel Fireball (announce if tank gets debuff for dispel)
 		warnFelFireball:Show()
 		SpecWarnFelFireballDispel:Show(args.destName)
+	elseif args:IsSpellID(67009) then								-- Nether Power
+		warnNetherPower:Show()
+		timerNetherPowerCD:Start()
+		specWarnNetherPower:Show()
 	end
 end
 
@@ -181,12 +185,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(67009) then								-- Nether Power
-		warnNetherPower:Show()
-		timerNetherPowerCD:Start()
-		specWarnNetherPower:Show()
-
-	elseif args:IsSpellID(67901, 67902, 67903, 66258) then		-- Infernal Volcano
+	if args:IsSpellID(67901, 67902, 67903, 66258) then		-- Infernal Volcano
 		timerVolcanoCD:Start()
 		warnVolcanoSoon:Schedule(110)
 
