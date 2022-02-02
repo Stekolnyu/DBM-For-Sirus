@@ -42,6 +42,7 @@ local specWarnFireBomb		= mod:NewSpecialWarningMove(66317, nil, nil, nil, 1, 2)
 local specWarnHardMove		= mod:NewSpecialWarningYou(52311, nil, nil, nil, 3, 2)
 
 local enrageTimer			= mod:NewBerserkTimer(223)
+local enrageTimerTest		= mod:NewBerserkTimer(223)
 local timerCombatStart		= mod:NewCombatTimer(11.5)
 local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss", 2457, nil, nil, 1)
 local timerSubmerge			= mod:NewTimer(40, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
@@ -78,8 +79,8 @@ local phases				= {}
 local DreadscaleActive		= true  	-- Is dreadscale moving?
 local DreadscaleDead	= false
 local AcidmawDead	= false
-
-
+local dead		= 0
+local enragescal		= 30
 mod.vb.phase = 1
 
 function mod:OnCombatStart(delay)
@@ -312,9 +313,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 			timerBreath:Start(23)
+			enrageTimerTest:Start()
+			if enrageTimerTest:GetRemaining() then
+				local elapsed, total = enrageTimerTest:GetTime()
+				local extend = total-elapsed
+				local timerEnrage	= (dead * enragescal)
+				enrageTimerTest:Stop()
+				enrageTimerTest:Update(0, extend - timerEnrage)
+			end
 		end
 		self:UnscheduleMethod("WormsSubmerge")
 		timerNextCrash:Start(45)
+		timerBreath:Start(23)
 		timerNextBoss:Cancel()
 		timerSubmerge:Cancel()
 		if self.Options.RangeFrame then
@@ -324,6 +334,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:UNIT_DIED(args)
+	if UnitName("player") then
+		dead = dead + 1
+	end
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 34796 then
 		specWarnSilence:Cancel()
@@ -360,3 +373,4 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
+
