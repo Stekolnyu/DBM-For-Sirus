@@ -58,6 +58,7 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:Show(L.name)
 		DBM.BossHealth:AddBoss(34780, L.name)
 	end
+	timerNetherPowerCD:Start()
 	timerPortalCD:Start(20-delay)
 	warnPortalSoon:Schedule(15-delay)
 	timerVolcanoCD:Start(80-delay)
