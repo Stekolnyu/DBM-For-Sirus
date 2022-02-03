@@ -14,7 +14,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon = "Предупреждать о переходе на пешую фазу"
+	WarnPhase2Soon = "Предупреждать о переходе на пешую фазу",
+	InvIcons         = "Устанавливать метки на цели заклинания $spell:305252"
 }
 
 L:SetMiscLocalization{
