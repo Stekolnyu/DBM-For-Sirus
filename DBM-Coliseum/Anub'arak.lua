@@ -35,9 +35,9 @@ local specWarnPCold			= mod:NewSpecialWarningYou(66013, false, nil, nil, 1, 2)
 
 --local timerTest			  = mod:NewTimer(55, "timerTest", 45419, nil, nil, 1)
 local timerAdds				= mod:NewTimer(45, "timerAdds", 45419, nil, nil, 1)
-local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
+local timerSubmerge			= mod:NewTimer(80, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
 local timerEmerge			= mod:NewTimer(55, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
-local timerFreezingSlash	= mod:NewCDTimer(20, 66012, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerFreezingSlash	= mod:NewCDTimer(15, 66012, nil, "Tank|Healer", nil, 5, nil, DBM_CORE_TANK_ICON)
 local timerPCold			= mod:NewBuffActiveTimer(20, 66013, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON)
 local timerShadowStrike		= mod:NewNextTimer(30.5, 66134, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON)
 local timerShadowStrikefix	= mod:NewNextTimer(20.5, 66134, nil, nil, nil, 3, nil, DBM_CORE_DEADLY_ICON) -- костыль
