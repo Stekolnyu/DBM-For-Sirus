@@ -10,7 +10,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"UNIT_HEALTH",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_DAMAGE"
 )
 
 local warningNovaCast               = mod:NewCastAnnounce(305129, 10) -- Вспышка скверны
@@ -95,6 +96,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	end
 end
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(305166) and args:IsPlayer() then
+		SendChatMessage(L.YellHandfail, "RAID")
+	end
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(30572) then
@@ -113,6 +119,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(305131) and args:IsPlayer() then
 		specWarnHandOfMagt:Show()
+		SendChatMessage(L.YellHand, "SAY")
 	elseif args:IsSpellID(305135) then
 		timerShatteredArmor:Start(args.destName)
 	end
