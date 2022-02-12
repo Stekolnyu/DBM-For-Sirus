@@ -44,7 +44,7 @@ local specWarnHardMove		= mod:NewSpecialWarningYou(52311, nil, nil, nil, 3, 2)
 local enrageTimer			= mod:NewBerserkTimer(223)
 local timerCombatStart		= mod:NewCombatTimer(11.5)
 local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss", 2457, nil, nil, 1)
-local timerSubmerge			= mod:NewTimer(40, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
+local timerSubmerge			= mod:NewTimer(43, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
 local timerEmerge			= mod:NewTimer(4, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
 
 local timerBreath			= mod:NewCDTimer(20, 67650, nil, nil, nil, 3)
@@ -76,12 +76,12 @@ local toxinTargets			= {}
 local burnIcon				= 8
 local phases				= {}
 local DreadscaleActive		= true  	-- Is dreadscale moving?
-local DreadscaleDead	= false
-local AcidmawDead	= false
-local dead		= 0
-local enragescal		= 30
-mod.vb.phase = 1
-
+local DreadscaleDead		= false
+local AcidmawDead			= false
+local dead					= 0
+local enragescal			= 30
+mod.vb.phase 				= 1
+local charge				= 0
 function mod:OnCombatStart(delay)
 	DBM:FireCustomEvent("DBM_EncounterStart", 34797, "The Beasts of Northrend")
 	table.wipe(bileTargets)
@@ -97,8 +97,8 @@ function mod:OnCombatStart(delay)
 		timerNextBoss:Start(175 - delay)
 		timerNextBoss:Schedule(170)
 	end
-	timerNextStomp:Start(28-delay)
-	timerRisingAnger:Start(30-delay)
+	timerNextStomp:Start(26.5-delay)
+	timerRisingAnger:Start(38-delay)
 	timerCombatStart:Start(-delay)
 end
 
@@ -125,7 +125,7 @@ function mod:WormsEmerge()
 	if not AcidmawDead then
 		if DreadscaleActive then
 			timerSweepCD:Start(16)
-			timerParalyticSprayCD:Start(9)
+			timerParalyticSprayCD:Start(22)
 		else
 			timerSubmerge:stop()
 			timerSlimePoolCD:Start(14)
@@ -144,7 +144,7 @@ function mod:WormsEmerge()
 			timerBurningSprayCD:Start(17)
 		end
 	end
-	self:ScheduleMethod(35, "WormsSubmerge")
+	self:ScheduleMethod(43, "WormsSubmerge")
 end
 
 function mod:WormsSubmerge()
@@ -270,7 +270,19 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:match(L.Charge) or msg:find(L.Charge) then
 		timerNextCrash:Start()
-		timerBreath:Start(27)
+		timerBreath:Start(28.5)
+			elseif charge == 1 then
+				timerBreath:Start(25)
+				charge = charge + 1
+			elseif charge == 2 then
+				timerBreath:Start(26)
+				charge = charge + 1
+			elseif charge == 3 then
+				timerBreath:Start(29)
+				charge = charge + 1
+			elseif charge == 4 then
+				timerBreath:Start(25)
+				charge = charge + 1
 		if self.Options.ClearIconsOnIceHowl then
 			self:ClearIcons()
 		end
@@ -307,6 +319,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerCombatStart:Start()
 	elseif msg == L.Phase2 or msg:find(L.Phase2) then
 		self:ScheduleMethod(17, "WormsEmerge")
+		timerNextBoss:Start(137)
 		timerCombatStart:Start(11.5)
 		self.vb.phase = 2
 		if self.Options.RangeFrame then
@@ -316,14 +329,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self.vb.phase = 3
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
-			timerBreath:Start(27)
-			if enrageTimer:GetRemaining() then
-				local elapsed, total = enrageTimer:GetTime()
-				local extend = total-elapsed
-				local timerEnrage	= (dead * enragescal)
-				enrageTimer:Stop()
-				enrageTimer:Update(0, extend - timerEnrage)
-			end
+			timerBreath:Start(28.5)
 		end
 		self:UnscheduleMethod("WormsSubmerge")
 		timerNextCrash:Start(45)
@@ -375,6 +381,9 @@ function mod:UNIT_DIED(args)
 			DBM.BossHealth:RemoveBoss(35144)
 			DBM.BossHealth:RemoveBoss(34799)
 		end
+	elseif cid == 34799 and cid == 35144 then
+		timerEmerge:Cancel()
+		timerSubmerge:Cancel()
 	end
 end
 

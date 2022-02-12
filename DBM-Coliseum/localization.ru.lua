@@ -178,7 +178,7 @@ L:SetWarningLocalization{
 	SpecWarnSwitchTarget		= "Смена цели",
 	SpecWarnKickNow				= "Прерывание",
 	WarningTouchDebuff			= "Отрицательный эффект на |3-5(>%s<)",
-	WarningPoweroftheTwins2		= "Сила близнецов - больше исцеления на |3-3(>%s<)",
+	WarningPoweroftheTwins		= "Сила близнецов - больше исцеления на >%s<",
 	SpecWarnPoweroftheTwins		= "Сила близнецов"
 }
 
