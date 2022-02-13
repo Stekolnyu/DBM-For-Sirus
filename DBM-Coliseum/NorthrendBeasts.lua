@@ -128,7 +128,7 @@ function mod:WormsEmerge()
 			timerSweepCD:Start(16)
 			timerParalyticSprayCD:Start(22)
 		else
-			timerSubmerge:stop()
+			timerSubmerge:Stop()
 			timerSlimePoolCD:Start(14)
 			timerParalyticBiteCD:Start(5)
 			timerAcidicSpewCD:Start(10)
