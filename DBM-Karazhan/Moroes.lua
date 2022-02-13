@@ -91,9 +91,9 @@ local timerDeathMark            = mod:NewTargetTimer(7, 305470, nil, nil, nil, 5
 local timerDeathMarkCD			= mod:NewCDTimer(25, 305470, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON) -- метка
 local timerPhase2				= mod:NewTimer(180, "Phase2", 40810, nil, nil, 6)
 local timerDanceCD			    = mod:NewCDTimer(20, 305472, nil, nil, nil, 7)
-local timerSpreeCD		= mod:NewCDTimer(85, 305460, nil, nil, 6) -- череда
+local timerSpreeCD				= mod:NewCDTimer(85, 305461, nil, nil, 6) -- череда
 
-local warnSound						= mod:NewSoundAnnounce()
+local warnSound					= mod:NewSoundAnnounce()
 
 local berserkTimer				= mod:NewBerserkTimer(525)
 
@@ -148,7 +148,7 @@ function mod:SPELL_CAST_START(args)
 		warnDanceSoon:Show(17)
 		timerDanceCD:Start()
 		specWarnDance:Show()
-	elseif args:IsSpellID(305460) then -- череда
+	elseif args:IsSpellID(305461) then -- череда
 		timerSpreeCD:Start()
 	end
 end

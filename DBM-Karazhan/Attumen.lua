@@ -37,7 +37,7 @@ local timerTrampCD          = mod:NewCDTimer(15, 305264, nil, nil, nil, 3) -- М
 
 local warnSound						= mod:NewSoundAnnounce()
 
-mod:AddBoolOption("InvIcons", true)
+mod:AddSetIconOption("InvIcons", 305252, true, true, {6})
 
 mod.vb.phase = 0
 mod.vb.lastCurse = 0
