@@ -14,31 +14,34 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local warningNovaCast               = mod:NewCastAnnounce(305129, 10) -- Вспышка скверны
-local warnHandOfMagt			    = mod:NewSpellAnnounce(305131, 1) -- Печать
-local warnDevastatingStrike		    = mod:NewSpellAnnounce(305134, 3, nil, "Tank|Healer") -- сокрушительный удар
-local warnPhase2Soon   				= mod:NewPrePhaseAnnounce(2)
-local warnPhase2     				= mod:NewPhaseAnnounce(2)
+-- обычка --
+local warnPhase2Soon   				= mod:NewPrePhaseAnnounce(2)	-- анонс о скорой 2 фазе(Падение потолка)
+local warnPhase2     				= mod:NewPhaseAnnounce(2)		-- оповещение второй фазы(Падение потолка)
 
-local specWarnNova                  = mod:NewSpecialWarningRun(305129, nil, nil, nil, 1, 2) -- Вспышка скверны
-local specWarnHandOfMagt            = mod:NewSpecialWarningSpell(305131, nil, nil, nil, 1, 2) -- Печать
-local specWarnDevastatingStrike	    = mod:NewSpecialWarningTarget(305134, "Tank", nil, nil, nil, 1, 2)
-
-
-local timerNovaCD                   = mod:NewCDTimer(80, 305129, nil, nil, nil, 3) -- Кубы
 local timerShakeCD                  = mod:NewCDTimer(50, 30572, nil, nil, nil, 3) -- Сотрясение
 local timerShakeCast                = mod:NewCastTimer(50, 30572, nil, nil, nil, 3) -- Сотрясение
-local timerHandOfMagtCD             = mod:NewCDTimer(20, 305131, nil, nil, nil, 3)
-local timerDevastatingStrikeCD		= mod:NewCDTimer(15, 305134, nil, "Tank|Healer", nil, 1)
-local timerShatteredArmor           = mod:NewTargetTimer(30, 305135, nil, "Tank|Healer", nil, 1)
+
+-- героик --
+local warningNovaCast               = mod:NewCastAnnounce(305129, 10) -- Вспышка скверны
+local warnHandOfMagt			    = mod:NewSpellAnnounce(305131, 1) -- Печать магтеридона
+local warnDevastatingStrike		    = mod:NewSpellAnnounce(305134, 3, nil, "Tank|Healer") -- сокрушительный удар
+
+local specWarnNova                  = mod:NewSpecialWarningRun(305129, nil, nil, nil, 1, 2) -- Вспышка скверны
+local specWarnHandOfMagt            = mod:NewSpecialWarningSpell(305131, nil, nil, nil, 1, 2) -- Печать магтеридона
+local specWarnDevastatingStrike	    = mod:NewSpecialWarningTarget(305134, "Tank", nil, nil, nil, 1, 2)	--Оповещение на экран о получении сокрушительного удара
+
+local timerHandOfMagtCD             = mod:NewCDTimer(15, 305131, nil, nil, nil, 3)	-- печать магтеридона
+local timerDevastatingStrikeCD		= mod:NewCDTimer(15, 305134, nil, "Tank|Healer", nil, 1)	-- сокрушительный удар
+local timerShatteredArmor           = mod:NewTargetTimer(30, 305135, nil, "Tank|Healer", nil, 1)	-- дебаф сокрушнительного удара
+
+-- общее --
+local timerNovaCD                   = mod:NewCDTimer(80, 305129, nil, nil, nil, 3) -- Кубы
 local timerPull				        = mod:NewTimer(112, "Pull", 305131, nil, nil, 6) -- Пулл босса
 
 local pullWarned = true
 local warned_P1 = false
 local warned_P2 = false
 local cub = 1
-
-
 
 local handTargets = {}
 local targetShattered
@@ -96,8 +99,9 @@ function mod:SPELL_CAST_START(args)
 		end
 	end
 end
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(305166) and args:IsPlayer() then
+
+function mod:SPELL_DAMAGE(args)			-- слакер пишет в рейд что взорвал печать
+	if args:IsSpellID(305133) and args:IsPlayer() then
 		SendChatMessage(L.YellHandfail, "RAID")
 	end
 end
@@ -117,7 +121,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(305131) and args:IsPlayer() then
+	if args:IsSpellID(305131) and args:IsPlayer() then		-- возможно уберу в будущем
 		specWarnHandOfMagt:Show()
 		SendChatMessage(L.YellHand, "SAY")
 	elseif args:IsSpellID(305135) then
@@ -143,6 +147,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)	-- идею взял с бс гер ва
 			local extend = total-elapsed
 			timerNovaCD:Stop()
 			timerNovaCD:Update(0, 10+extend)
+		end
+	elseif msg == L.YellPhase1 then	-- попытка словить активацию магика
+		if mod:IsDifficulty("heroic25") or mod:IsDifficulty("heroic10") then
+			timerNovaCD:Start()
+			timerHandOfMagtCD:Start(20)
+			timerDevastatingStrikeCD:Start()
 		end
 	end
 end

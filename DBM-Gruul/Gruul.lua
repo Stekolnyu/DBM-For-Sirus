@@ -17,15 +17,18 @@ local timerEchoCD                   = mod:NewCDTimer(18, 36297)
 local timerRockCD                   = mod:NewCDTimer(30, 36240)
 local specWarnRock                  = mod:NewSpecialWarningMove(36240)
 
+local specWarnHands					= mod:NewSpecialWarningMoveAway(305188, "Hands")
 local timerHandCD                   = mod:NewCDTimer(29, 305188)
 local timerHateStrike		    = mod:NewCDTimer(6, 305197)
-local timerStunningBlow		    = mod:NewCDTimer(20, 305183)
+local timerStunningBlow		    = mod:NewCDTimer(16, 305183)
 local timerHandStrike               = mod:NewTimer(7,"Strike", 305188)
 local timerFurnaceActive            = mod:NewTimer(8,"TimerFurnaceActive", 305201)
 local timerFurnaceInactive          = mod:NewTimer(43,"TimerFurnaceInactive", 305201)
 local timerBurnedFlesh              = mod:NewTimer(20,"TimerBurnedFlesh", 305204)
 
 local rockCounter = 1
+
+mod:AddBoolOption("HandsOption",false)
 
 function mod:OnCombatStart(delay)
 	DBM:FireCustomEvent("DBM_EncounterStart", 19044, "Gruul the Dragonkiller")
@@ -59,6 +62,9 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(305188) then
+		if self.Options.HandsOption then
+			specWarnHands:Show()
+		end
 		timerHandCD:Start()
 		timerHandStrike:Start()
 	elseif args:IsSpellID(36240) then
