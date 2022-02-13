@@ -165,7 +165,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66532, 66963, 66964, 66965) then		-- Fel Fireball (announce if tank gets debuff for dispel)
 		warnFelFireball:Show()
 		SpecWarnFelFireballDispel:Show(args.destName)
-	elseif args:IsSpellID(66228, 67108, 67106, 67107) then								-- Nether Power
+	elseif args:IsSpellID(66228, 67108, 67106, 67107) and self:AntiSpam(5, 1) then								-- Nether Power
 		warnNetherPower:Show()
 		timerNetherPowerCD:Start()
 		specWarnNetherPower:Show()

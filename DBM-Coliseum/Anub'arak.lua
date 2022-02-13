@@ -229,13 +229,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg) --
 		timerAdds:Cancel()
 		warnAdds:Cancel()
 		warnSubmerge:Show()
-		warnEmergeSoon:Schedule(58.5)
+		warnEmergeSoon:Schedule(45)
 		timerEmerge:Start()
 		timerFreezingSlash:Stop()
 		self:UnscheduleMethod("ShadowStrike")
 		timerShadowStrike:Cancel()
 		preWarnShadowStrike:Cancel()
-		self:ScheduleMethod(65, "EmergeTest")	-- костыль
+		self:ScheduleMethod(55, "EmergeTest")	-- костыль
 	end
 end
 
@@ -249,9 +249,9 @@ function mod:RAID_BOSS_EMOTE(msg)
 		warnEmergeSoon:Schedule(45)
 		timerEmerge:Start()
 		timerFreezingSlash:Stop()
-        self:ScheduleMethod(65, "EmergeTest")
+        self:ScheduleMethod(55, "EmergeTest")
 	elseif msg and msg:find(L.Emerge) then
-        self:UnscheduleMethod(65, "EmergeTest")
+        self:UnscheduleMethod(55, "EmergeTest")
         self.vb.Phase = 1
 		self.vb.Burrowed = false
 		timerAdds:Start(10)

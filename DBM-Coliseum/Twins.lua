@@ -73,19 +73,17 @@ function mod:SPELL_CAST_START(args)
 		self:SpecialAbility(debuff)
 	elseif args:IsSpellID(65875, 67303, 67304, 67305) then 		-- Twin's Pact
 		timerHeal:Start()
-		self:SpecialAbility(true)
+		local debuff = UnitDebuff("player", darkEssence)
+		self:SpecialAbility(debuff)
 		if self:GetUnitCreatureId("target") == 34497 then	-- if lightbane, then switch to darkbane
 			specWarnSwitch:Show()
-			local debuff = UnitDebuff("player", lightEssence)
-			self:specWarnSpecial(debuff)
 		end
 	elseif args:IsSpellID(65876, 67306, 67307, 67308) then		-- Light Pact
 		timerHeal:Start()
-		self:SpecialAbility(true)
+		local debuff = UnitDebuff("player", lightEssence)
+		self:SpecialAbility(debuff)
 		if self:GetUnitCreatureId("target") == 34496 then	-- if darkbane, then switch to lightbane
 			specWarnSwitch:Show()
-			local debuff = UnitDebuff("player", darkEssence)
-			self:specWarnSpecial(debuff)
 		end
 	end
 end

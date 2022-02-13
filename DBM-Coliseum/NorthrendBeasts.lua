@@ -45,7 +45,7 @@ local enrageTimer			= mod:NewBerserkTimer(223)
 local timerCombatStart		= mod:NewCombatTimer(11.5)
 local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss", 2457, nil, nil, 1)
 local timerSubmerge			= mod:NewTimer(43, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp", nil, nil, 6)
-local timerEmerge			= mod:NewTimer(4, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
+local timerEmerge			= mod:NewTimer(15, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp", nil, nil, 6)
 
 local timerBreath			= mod:NewCDTimer(20, 67650, nil, nil, nil, 3)
 local timerNextStomp		= mod:NewNextTimer(15, 66330, nil, nil, nil, 2)
@@ -82,6 +82,7 @@ local dead					= 0
 local enragescal			= 30
 mod.vb.phase 				= 1
 local charge				= 0
+
 function mod:OnCombatStart(delay)
 	DBM:FireCustomEvent("DBM_EncounterStart", 34797, "The Beasts of Northrend")
 	table.wipe(bileTargets)
@@ -270,19 +271,16 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:match(L.Charge) or msg:find(L.Charge) then
 		timerNextCrash:Start()
-		timerBreath:Start(28.5)
-			elseif charge == 1 then
-				timerBreath:Start(25)
-				charge = charge + 1
+		timerBreath:Start(26.5)
+		charge = charge + 1
 			elseif charge == 2 then
-				timerBreath:Start(26)
-				charge = charge + 1
+				timerBreath:Start(27)
 			elseif charge == 3 then
-				timerBreath:Start(29)
-				charge = charge + 1
+				timerBreath:Start(26)
 			elseif charge == 4 then
+				timerBreath:Start(29)
+			elseif charge == 5 then
 				timerBreath:Start(25)
-				charge = charge + 1
 		if self.Options.ClearIconsOnIceHowl then
 			self:ClearIcons()
 		end
@@ -329,11 +327,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self.vb.phase = 3
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
-			timerBreath:Start(28.5)
+			timerBreath:Start(22)
+		end
+		if self:IsDifficulty("normal10", "normal25") then
+			timerBreath:Start(23)
 		end
 		self:UnscheduleMethod("WormsSubmerge")
-		timerNextCrash:Start(45)
-		timerBreath:Start(23)
+		timerNextCrash:Start(35)
 		timerNextBoss:Cancel()
 		timerEmerge:Cancel()
 		timerSubmerge:Cancel()
