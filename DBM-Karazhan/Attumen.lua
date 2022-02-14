@@ -2,15 +2,16 @@ local mod	= DBM:NewMod("Attumen", "DBM-Karazhan")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision("20210502220000")
-mod:SetCreatureID(15550, 34972, 34972)
-mod:RegisterCombat("combat", 34972)
+mod:SetCreatureID(15550, 34972, 34972, 100507)
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_CAST_START",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_DIED"
 )
 
 ------------------ОБ------------------
@@ -37,27 +38,40 @@ local timerTrampCD          = mod:NewCDTimer(15, 305264, nil, nil, nil, 3) -- М
 
 local warnSound						= mod:NewSoundAnnounce()
 
-mod:AddSetIconOption("InvIcons", 305252, true, true, {6})
 
 mod.vb.phase = 0
 mod.vb.lastCurse = 0
 mod.vb.phaseCounter = true
 mod.vb.cena = true
 
-
-function mod:OnCombatStart(delay)
-	DBM:FireCustomEvent("DBM_EncounterStart", 34972, "Attumen the Huntsman")
-	self.vb.phase = 1
-	self.vb.cena = true
-	self.vb.phaseCounter = true
-	if mod:IsDifficulty("heroic10") then
-		timerInvCD:Start(20)
+local f = CreateFrame("Frame", nil, UIParent)
+f:RegisterEvent("PLAYER_REGEN_DISABLED")
+f:SetScript("OnEvent", function()
+	for i = 1, MAX_RAID_MEMBERS do
+	local pt = UnitName("raid"..i.."-target")
+		if pt and pt == "Ловчий Аттумен" then
+				DBM:FireCustomEvent("DBM_EncounterStart", 100507, "Attumen the Huntsman")
+				mod.vb.phase = 1
+				mod.vb.phaseCounter = true
+			if mod:IsDifficulty("heroic10") then
+				timerInvCD:Start(20)
+			end
+		end
 	end
-end
-
-function mod:OnCombatEnd(wipe)
-	DBM:FireCustomEvent("DBM_EncounterEnd", 34972, "Attumen the Huntsman", wipe)
-end
+end)
+-- function mod:OnCombatStart(delay)
+-- 	DBM:FireCustomEvent("DBM_EncounterStart", 100507, "Attumen the Huntsman")
+-- 	self.vb.phase = 1
+-- 	self.vb.cena = true
+-- 	self.vb.phaseCounter = true
+-- 	if mod:IsDifficulty("heroic10") then
+-- 		print(47)
+-- 		timerInvCD:Start(20)
+-- 	end
+-- end
+-- function mod:OnCombatEnd(wipe)
+-- 	DBM:FireCustomEvent("DBM_EncounterEnd", 100507, "Attumen the Huntsman", wipe)
+-- end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(43127, 29833) and GetTime() - self.vb.lastCurse > 5 then -- Обычка
@@ -77,10 +91,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSufferingCD:Start()
 		timerInvCD:Cancel()
 		warnPhase2:Show()
-	elseif args:IsSpellID(305252) then -- тест незримости - призрака
-		if self.Options.InvIcons then
-				self:SetIcon(args.destName, 8, 8)
-		end
 	end
 end
 
@@ -113,22 +123,8 @@ function mod:SPELL_CAST_START(args)
 		timerInvCD:Start()
 	elseif args:IsSpellID(305259) then -- муки
 		timerSufferingCD:Start()
-	elseif args:IsSpellID(305252) then -- тест незримости - призрака
-		if self.Options.InvIcons then
-				self:SetIcon(args.destName, 8, 8)
-			end
 	end
 end
---[[function mod:SPELL_AURA_DISPEL(args)
-	if args.spellId == 305252 then
-		if self.Options.AnnounceInvIcons then
-			self:SetIcon(args.destName, 0)
-			if self.Options.AnnounceInvIconsRemoved and DBM:GetRaidRank() > 0 then
-				SendChatMessage(L.InvIconRemoved:format(args.destName), "RAID")
-			end
-		end
-	end
---end]]
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.DBM_ATH_YELL_1 then -- 2 фаза

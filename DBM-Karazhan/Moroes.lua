@@ -5,7 +5,7 @@ mod:SetRevision("20210502220000")
 mod:SetCreatureID(15687, 19875, 19874, 19872, 17007, 19876, 19873)--Moroes
 --19875, 19874, 19872, 17007, 19876, 19873--all the adds, for future use
 --mod:RegisterCombat("yell", L.DBM_MOROES_YELL_START)
-mod:RegisterCombat("combat", 15687)
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -119,23 +119,44 @@ function mod:phase2()
 	timerSpreeCD:start(65)
 end
 
-function mod:OnCombatStart(delay)
-	DBM:FireCustomEvent("DBM_EncounterStart", 15687, "Moroes")
-	if mod:IsDifficulty("heroic10") then
+local f = CreateFrame("Frame", nil, UIParent)
+f:RegisterEvent("PLAYER_REGEN_DISABLED")
+f:SetScript("OnEvent", function()
+	for i = 1, MAX_RAID_MEMBERS do
+	local pt = UnitName("raid"..i.."-target")
+		if pt and pt == "Мороуз" then
+				DBM:FireCustomEvent("DBM_EncounterStart", 15687, "Moroes")
+			if mod:IsDifficulty("heroic10") then
 		warnSound:play("ya_vas_ne_zval")
-		self.vb.phase = 1
-		self.vb.phase2 = false
+		mod.vb.phase = 1
+		mod.vb.phase2 = false
 		timerDanceCD:Start()
 		timerPhase2:Start()
 		self:ScheduleMethod(178, "phase2warn")
 		warnDanceSoon:Show(17)
 		berserkTimer:Start()
+			end
+		end
 	end
-end
+end)
 
-function mod:OnCombatEnd(wipe)
-	DBM:FireCustomEvent("DBM_EncounterEnd", 15687, "Moroes", wipe)
-end
+-- function mod:OnCombatStart(delay)
+-- 	DBM:FireCustomEvent("DBM_EncounterStart", 15687, "Moroes")
+-- 	if mod:IsDifficulty("heroic10") then
+-- 		warnSound:play("ya_vas_ne_zval")
+-- 		self.vb.phase = 1
+-- 		self.vb.phase2 = false
+-- 		timerDanceCD:Start()
+-- 		timerPhase2:Start()
+-- 		self:ScheduleMethod(178, "phase2warn")
+-- 		warnDanceSoon:Show(17)
+-- 		berserkTimer:Start()
+-- 	end
+-- end
+
+-- function mod:OnCombatEnd(wipe)
+-- 	DBM:FireCustomEvent("DBM_EncounterEnd", 15687, "Moroes", wipe)
+-- end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305464) and self.vb.phase2 then
