@@ -25,7 +25,7 @@ local specWarnVoid			= mod:NewSpecialWarningMove(30533)
 local timerPortalPhase		= mod:NewTimer(61.5, "timerPortalPhase", "Interface\\Icons\\Spell_Arcane_PortalIronForge")
 local timerBanishPhase		= mod:NewTimer(31, "timerBanishPhase", "Interface\\Icons\\Spell_Shadow_Cripple")
 local timerBreathCast		= mod:NewCastTimer(2.5, 38523)
-local timerLyja				= mod:NewTimer(15,28865)
+local timerVoid				= mod:NewTimer(15, "timerVoid", 37063)
 
 local timerGates            = mod:NewTimer(13, "TimerGates" ,305400)
 local timerGhostPhase       = mod:NewTimer(75, "TimerGhostPhase" ,305408)
@@ -49,12 +49,17 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 		timerPortalPhase:Start(62-delay)
 		warningBanishSoon:Schedule(57-delay)
-		timerLyja:Start()
+		timerVoid:Start()
+		self:ScheduleMethod(15, "Void")
 	elseif mod:IsDifficulty("heroic10") then
 		timerGates:Start()
 		timerGhostPhase:Start()
 	end
 
+end
+
+function Void()
+	timerVoid:Start()
 end
 
 function mod:OnCombatEnd(wipe)
@@ -114,11 +119,13 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.DBM_NS_EMOTE_PHASE_2 then
 		timerPortalPhase:Cancel()
+		self:UnscheduleMethod(31, "Void")
 		warningBanish:Show()
 		timerBanishPhase:Start()
 		warningPortalSoon:Schedule(26)
 	elseif msg == L.DBM_NS_EMOTE_PHASE_1 then
 		timerBanishPhase:Cancel()
+		self:scheduleMethod(15, "Void")
 		warningPortal:Show()
 		timerPortalPhase:Start()
 		warningBanishSoon:Schedule(56.5)

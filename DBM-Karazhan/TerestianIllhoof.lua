@@ -118,32 +118,33 @@ function mod:SPELL_CAST_START(args)
 		timerHandCD:Start()
 		if args:IsPlayer() then
             warnSound:Play("fireinthe")
-			if args:IsSpellID(30115) then 
-				timerSacrifice:start()
-        end end
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(305351) then
-		if args.sourceName == L.name then
-			timerMarkCD:Start()
-			WarnMark:Show(args.destName)
-		elseif self.vb.tolik then
-			self.vb.tolik = false
-			warnSound:Play("tobecon")
-			self:ScheduleMethod(2, "resetTolik")
-		end
-		if args:IsPlayer() then
-			specWarnMark:Show()
-		end
-	elseif args:IsSpellID(305367) then
-		if args:IsPlayer() and ((args.amount or 1) >= 7) then
-			specWarnDart:Show(args.amount)
-		end
-	elseif args:IsSpellID(305360) then
-		if args:IsPlayer() then
-			specWarnSeed:Show()
+			if args.sourceName == L.name then
+				timerMarkCD:Start()
+				WarnMark:Show(args.destName)
+			elseif self.vb.tolik then
+				self.vb.tolik = false
+				warnSound:Play("tobecon")
+				self:ScheduleMethod(2, "resetTolik")
+			end
+			if args:IsPlayer() then
+				specWarnMark:Show()
+			end
+			if args:IsSpellID(30115) then
+				timerSacrifice:Start()
+		elseif args:IsSpellID(305367) then
+			if args:IsPlayer() and ((args.amount or 1) >= 7) then
+				specWarnDart:Show(args.amount)
+			end
+		elseif args:IsSpellID(305360) then
+			if args:IsPlayer() then
+				specWarnSeed:Show()
+			end
 		end
 	end
 end

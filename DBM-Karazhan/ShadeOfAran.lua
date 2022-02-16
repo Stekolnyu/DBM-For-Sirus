@@ -44,26 +44,17 @@ local warnFreeze            = mod:NewAnnounce("WarnFreeze", 4, 305328)
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
-mod:AddSetIconOption("WreathIcons", 29946, true, true, {5, 6, 7, 8})
 mod:AddSetIconOption("ElementalIcons", 29962, true, true, {6, 7, 8})
 
 local beastIcon = {}
 local WreathTargets = {}
-local flameWreathIcon = 8
 mod.vb.famCounter = 1
 
-local function warnFlameWreathTargets()
-	warningFlameTargets:Show(table.concat(WreathTargets, "<, >"))
-	table.wipe(WreathTargets)
-	flameWreathIcon = 8
-end
 
 function mod:OnCombatStart(delay)
 	DBM:FireCustomEvent("DBM_EncounterStart", 16524, "Shade of Aran")
 	if mod:IsDifficulty("normal10") then
 		berserkTimer:Start(-delay)
-		flameWreathIcon = 8
-		table.wipe(WreathTargets)
 	elseif mod:IsDifficulty("heroic10") then
 		timerSpecialHeroic:Start()
 		self.vb.famCounter = 1
@@ -112,17 +103,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningChains:Show(args.destName)
 		timerChains:Start(args.destName)
 	elseif args:IsSpellID(29946) then
-		WreathTargets[#WreathTargets + 1] = args.destName
 		timerFlame:Start()
 		if args:IsPlayer() then
 			specWarnDontMove:Show()
 		end
-		if self.Options.WreathIcons then
-			self:SetIcon(args.destName, flameWreathIcon, 20)
-			flameWreathIcon = flameWreathIcon - 1
-		end
-		self:Unschedule(warnFlameWreathTargets)
-		self:Schedule(0.3, warnFlameWreathTargets)
 	elseif args:IsSpellID(305328) then
 		timerFreeze:Start(args.destName)
 		warnFreeze:Show(args.destName)

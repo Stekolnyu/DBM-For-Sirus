@@ -28,6 +28,7 @@ local timerCurseCD			= mod:NewNextTimer(31, 43127, nil, nil, nil, 3)
 ------------------ХМ------------------
 
 local specWarnMezair		= mod:NewSpecialWarningDodge(305258, nil, nil, nil, 2, 2)
+local WarInv				= mod:NewSpellAnnounce(305253)	-- попытка поймать дебаф призрака
 
 local timerInvCD            = mod:NewCDTimer(21, 305251, nil, nil, nil, 3) -- Незримое присутствие
 local timerChargeCD         = mod:NewCDTimer(11, 305258, nil, nil, nil, 2) -- Галоп фаза 2
@@ -86,11 +87,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			warningCurseSoon:Schedule(26)
 		end
 		mod.vb.lastCurse = GetTime()
-	elseif args:IsSpellID(305265) then -- ???????
+	elseif args:IsSpellID(305265) then -- что-то типо 2 фазы
 		timerChargeCD:Start()
 		timerSufferingCD:Start()
 		timerInvCD:Cancel()
 		warnPhase2:Show()
+	elseif args:IsSpellID(305253) and args:IsDestTypePlayer() then	-- попытка при получении дебафа игроком оповещение на экран кто полутал дебаф
+		WarInv:Show(args.destName)
+	elseif args:IsSpellID(305253) and args:IsPlayer() then	-- попытка при получении дебафа крик что он на тебе
+		SendChatMessage(L.YellInv, "SAY")
 	end
 end
 

@@ -20,7 +20,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	DBM_ATH_YELL_1		= "Давай, Полночь, разгоним этот сброд!",
-	KillAttumen			= "Всегда знал... когда-нибудь... я стану... добычей."
+	KillAttumen			= "Всегда знал... когда-нибудь... я стану... добычей.",
+	YellInv				= "Диспел меня!"
 }
 
 
@@ -211,7 +212,8 @@ L:SetTimerLocalization{
 	TimerGhostPhase     = "Призрачная фаза",
 	TimerRepentance     = "Возмездие",
 	TimerPortals        = "Появление порталов",
-	TimerNormalPhase    = "Обычная фаза"
+	TimerNormalPhase    = "Обычная фаза",
+	timerVoid			= "Лужа"
 }
 
 L:SetOptionLocalization{
