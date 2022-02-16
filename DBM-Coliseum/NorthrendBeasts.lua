@@ -105,6 +105,7 @@ end
 
 function mod:OnCombatEnd(wipe)
 	DBM:FireCustomEvent("DBM_EncounterEnd", 34797, "The Beasts of Northrend", wipe)
+	charge = 0
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -258,21 +259,14 @@ function mod:SPELL_DAMAGE(args)
 	elseif args:IsPlayer() and args:IsSpellID(66881, 67638, 67639, 67640) then							-- Slime Pool
 		specWarnSlimePool:Show()
 	end
-		if args:IsSpellID(66734) and self.Options.SaySlackers											-- слакер на реве
-			then
-				self:UnscheduleMethod("warnHardMove")
-				HardMoveSlack[#HardMoveSlack + 1] = args.destName
-			if args:IsPlayer() then
-				specWarnHardMove:Show()
-		end
-	end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:match(L.Charge) or msg:find(L.Charge) then
 		timerNextCrash:Start()
-		timerBreath:Start(26.5)
 		charge = charge + 1
+			elseif charge == 1 then
+				timerBreath:Start(26.5)
 			elseif charge == 2 then
 				timerBreath:Start(27)
 			elseif charge == 3 then
