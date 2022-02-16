@@ -90,7 +90,7 @@ local timerWoundCD              = mod:NewCDTimer(10, 305463, nil, nil, nil, 5, n
 local timerDeathMark            = mod:NewTargetTimer(7, 305470, nil, nil, nil, 5, nil, DBM_CORE_HEALER_ICON) -- метка
 local timerDeathMarkCD			= mod:NewCDTimer(25, 305470, nil, nil, nil, 3, nil, DBM_CORE_HEALER_ICON) -- метка
 local timerPhase2				= mod:NewTimer(180, "Phase2", 40810, nil, nil, 6)
-local timerDanceCD			    = mod:NewCDTimer(20, 305472, nil, nil, nil, 7)	-- танец 
+local timerDanceCD			    = mod:NewCDTimer(20, 305472, nil, nil, nil, 7)	-- танец
 local timerSpreeCD				= mod:NewCDTimer(85, 305461, nil, nil, 6) -- череда
 
 local warnSound					= mod:NewSoundAnnounce()
