@@ -263,18 +263,21 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:match(L.Charge) or msg:find(L.Charge) then
-		timerNextCrash:Start()
-		charge = charge + 1
-			elseif charge == 1 then
+			if 	charge == 2 then
 				timerBreath:Start(26.5)
-			elseif charge == 2 then
-				timerBreath:Start(27)
+				charge = charge + 1
 			elseif charge == 3 then
-				timerBreath:Start(26)
+				timerBreath:Start(27)
+				charge = charge + 1
 			elseif charge == 4 then
-				timerBreath:Start(29)
+				timerBreath:Start(26)
+				charge = charge + 1
 			elseif charge == 5 then
+				timerBreath:Start(29)
+				charge = charge + 1
+			elseif charge == 6 then
 				timerBreath:Start(25)
+				charge = charge + 1
 		if self.Options.ClearIconsOnIceHowl then
 			self:ClearIcons()
 		end
@@ -303,6 +306,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 		if self.Options.SetIconOnChargeTarget then
 			self:SetIcon(target, 8, 5)
 		end
+			end
 	end
 end
 
@@ -319,6 +323,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		end
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		self.vb.phase = 3
+		charge = 2
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 			timerBreath:Start(22)

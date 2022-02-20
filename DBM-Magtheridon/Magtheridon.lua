@@ -18,8 +18,7 @@ mod:RegisterEvents(
 local warnPhase2Soon   				= mod:NewPrePhaseAnnounce(2)	-- анонс о скорой 2 фазе(Падение потолка)
 local warnPhase2     				= mod:NewPhaseAnnounce(2)		-- оповещение второй фазы(Падение потолка)
 
-local timerShakeCD                  = mod:NewCDTimer(50, 30572, nil, nil, nil, 3) -- Сотрясение
-local timerShakeCast                = mod:NewCastTimer(50, 30572, nil, nil, nil, 3) -- Сотрясение
+local timerShakeCD                  = mod:NewCDTimer(55, 30572, nil, nil, nil, 3) -- Сотрясение
 
 -- героик --
 local warningNovaCast               = mod:NewCastAnnounce(305129, 10) -- Вспышка скверны
@@ -42,6 +41,7 @@ local pullWarned = true
 local warned_P1 = false
 local warned_P2 = false
 local cub = 1
+local shake = 1
 
 local handTargets = {}
 local targetShattered
@@ -56,7 +56,7 @@ function mod:OnCombatStart(delay)
 		timerHandOfMagtCD:Start()
 		timerDevastatingStrikeCD:Start()
 	elseif mod:IsDifficulty("normal25") or mod:IsDifficulty("normal10") then
-		timerNovaCD:Start(64)
+		timerNovaCD:Start(67)
 	end
 	cub = 2
 	warned_P1 = false
@@ -67,6 +67,7 @@ end
 function mod:OnCombatEnd(wipe)
 	DBM:FireCustomEvent("DBM_EncounterEnd", 17257, "Magtheridon", wipe)
 	cub = 1
+	shake = 1
 end
 
 function mod:SPELL_CAST_START(args)
@@ -80,16 +81,28 @@ function mod:SPELL_CAST_START(args)
 		warnDevastatingStrike:Show(targetShattered)
 		specWarnDevastatingStrike:Show(targetShattered)
 		timerDevastatingStrikeCD:Start()
-	elseif args:IsSpellID(30616) then
+	elseif args:IsSpellID(30616) then		-- таймер кубов на уровне костылей
 		specWarnNova:Show(args.sourceName)
 		if cub == 2 then
-			timerNovaCD:Start(76)
+			timerNovaCD:Start(74)
 			cub = cub + 1
 		elseif cub == 3 then
-			timerNovaCD:Start(69)
+			timerNovaCD:Start(67)
 			cub = cub + 1
 		elseif cub == 4 then
+			timerNovaCD:Start(67)
+			cub = cub + 1
+		elseif cub == 5 then
+			timerNovaCD:Start(74)
+			cub = cub + 1
+		elseif cub == 6 then
 			timerNovaCD:Start(70)
+			cub = cub + 1
+		elseif cub == 7 then
+			timerNovaCD:Start(74)
+			cub = cub + 1
+		elseif cub == 8 then	--этот сделан на угад остальные по стриму [https://www.twitch.tv/videos/1303324658?t]
+			timerNovaCD:Start(74)
 			cub = cub + 1
 		end
 	elseif args:IsSpellID(30510) then
@@ -107,9 +120,26 @@ function mod:SPELL_DAMAGE(args)			-- слакер пишет в рейд что 
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(30572) then
-		timerShakeCD:Start()
-		timerShakeCast:Start()
+	if args:IsSpellID(30572) then	-- Сотрясение оказывается разные таймера
+		if shake == 1 then
+			timerShakeCD:Start()
+			shake = shake + 1
+		elseif shake == 2 then
+			timerShakeCD:Start(37)
+			shake = shake + 1
+		elseif shake == 3 then
+			timerShakeCD:Start(23)
+			shake = shake + 1
+		elseif shake == 4 then
+			timerShakeCD:Start(50)
+			shake = shake + 1
+		elseif shake == 5 then
+			timerShakeCD:Start()
+			shake = shake + 1
+		elseif shake == 6 then
+			timerShakeCD:Start()
+			shake = shake + 1
+		end
 	elseif args:IsSpellID(305166) then
 		handTargets[#handTargets + 1] = args.destName
 		if #handTargets >= 3 then
@@ -121,7 +151,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(305131) and args:IsPlayer() then		-- возможно уберу в будущем
+	if args:IsSpellID(305131) and args:IsPlayer() then		-- возможно уберу в будущем пишет в чат если на тебе печать
 		specWarnHandOfMagt:Show()
 		SendChatMessage(L.YellHand, "SAY")
 	elseif args:IsSpellID(305135) then
@@ -140,7 +170,7 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)	-- идею взял с бс гер вайни --
+function mod:CHAT_MSG_MONSTER_YELL(msg)	-- идею взял с бс гер вайни --обновление таймера в случае потолка
 	if msg == L.YellPhase2 then
 		if timerNovaCD:GetRemaining() then
 			local elapsed, total = timerNovaCD:GetTime()

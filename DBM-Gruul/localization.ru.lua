@@ -25,7 +25,8 @@ L:SetOptionLocalization{
 	Move 					= "Объявлять опасные способности для милизоны",
 	AnnounceToChat 			= "Анонсировать об активации в чат",
 	KickNow 				= "Объявлять прерывание заклинания",
-	TimerWhirl 				= "Отсчитывать время до окончания вихря"
+	TimerWhirl 				= "Отсчитывать время до окончания вихря",
+	RangeFireBomb			= "Включить Range radar при появлении $spell:305236"
 }
 
 L:SetMiscLocalization{

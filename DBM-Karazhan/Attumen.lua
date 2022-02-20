@@ -39,11 +39,11 @@ local timerTrampCD          = mod:NewCDTimer(15, 305264, nil, nil, nil, 3) -- М
 
 local warnSound						= mod:NewSoundAnnounce()
 
+mod:AddSetIconOption("InvIcons", 305253, true, true, {8})
 
 mod.vb.phase = 0
 mod.vb.lastCurse = 0
 mod.vb.phaseCounter = true
-mod.vb.cena = true
 
 local f = CreateFrame("Frame", nil, UIParent)
 f:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -60,6 +60,7 @@ f:SetScript("OnEvent", function()
 		end
 	end
 end)
+
 -- function mod:OnCombatStart(delay)
 -- 	DBM:FireCustomEvent("DBM_EncounterStart", 100507, "Attumen the Huntsman")
 -- 	self.vb.phase = 1
@@ -70,9 +71,10 @@ end)
 -- 		timerInvCD:Start(20)
 -- 	end
 -- end
--- function mod:OnCombatEnd(wipe)
--- 	DBM:FireCustomEvent("DBM_EncounterEnd", 100507, "Attumen the Huntsman", wipe)
--- end
+
+function mod:OnCombatEnd(wipe)
+	DBM:FireCustomEvent("DBM_EncounterEnd", 100507, "Attumen the Huntsman", wipe)
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(43127, 29833) and GetTime() - self.vb.lastCurse > 5 then -- Обычка
@@ -92,9 +94,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSufferingCD:Start()
 		timerInvCD:Cancel()
 		warnPhase2:Show()
-	elseif args:IsSpellID(305253) and args:IsDestTypePlayer() then	-- попытка при получении дебафа игроком оповещение на экран кто полутал дебаф
+	elseif args:IsSpellID(305253) then	-- попытка при получении скрытого дебафа игроком оповещение на экран кто полутал дебаф
 		WarInv:Show(args.destName)
-	elseif args:IsSpellID(305253) and args:IsPlayer() then	-- попытка при получении дебафа крик что он на тебе
+		if self.Options.SetIconOnTouchTarget then
+			self:SetIcon(args.destName, 8, 5)
+		end
+	elseif args:IsSpellID(305253) and args:IsPlayer() then	-- попытка при получении скрытого дебафа крикнуть что он на тебе
 		SendChatMessage(L.YellInv, "SAY")
 	end
 end
@@ -109,10 +114,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305258) then -- галоп
-		if self.vb.cena then
-            warnSound:Play("jhoncena")
-            self.vb.cena = false
-        end
 		timerChargeCD:Start()
 		timerChargeCast:Start()
 		specWarnMezair:Show()
@@ -120,10 +121,6 @@ function mod:SPELL_CAST_START(args)
 		timerCharge2CD:Start()
 		timerChargeCast:Start()
 		specWarnMezair:Show()
-		if self.vb.cena then
-            warnSound:Play("jhoncena")
-            self.vb.cena = false
-        end
 	elseif args:IsSpellID(305251) then -- незримое присутствие
 		timerInvCD:Start()
 	elseif args:IsSpellID(305259) then -- муки
