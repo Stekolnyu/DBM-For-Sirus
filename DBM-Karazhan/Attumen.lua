@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_CAST_START",
 	"UNIT_HEALTH",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"SPELL_CAST_SUCCESS"
 )
 
 ------------------ОБ------------------
@@ -109,6 +110,15 @@ function mod:SPELL_AURA_REMOVED(args) -- ???????
 		timerCharge2CD:Start()
 		timerTrampCD:Start(20)
 		warnPhase3:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)	-- попытка №6
+	if args:IsSpellID(305253) then	-- попытка при получении скрытого дебафа игроком оповещение на экран кто полутал дебаф
+	WarInv:Show(args.destName)
+		if self.Options.SetIconOnTouchTarget then
+			self:SetIcon(args.destName, 8, 5)
+		end
 	end
 end
 
