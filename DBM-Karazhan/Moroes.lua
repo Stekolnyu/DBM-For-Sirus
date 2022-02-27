@@ -128,7 +128,6 @@ f:SetScript("OnEvent", function()
 		if pt and pt == "Мороуз" then
 				DBM:FireCustomEvent("DBM_EncounterStart", 15687, "Moroes")
 			if mod:IsDifficulty("heroic10") then
-		warnSound:play("ya_vas_ne_zval")
 		mod.vb.phase = 1
 		mod.vb.phase2 = false
 		timerDanceCD:Start()
@@ -140,6 +139,7 @@ f:SetScript("OnEvent", function()
 		end
 	end
 end)
+
 
 -- function mod:OnCombatStart(delay)
 -- 	DBM:FireCustomEvent("DBM_EncounterStart", 15687, "Moroes")
@@ -155,9 +155,9 @@ end)
 -- 	end
 -- end
 
--- function mod:OnCombatEnd(wipe)
--- 	DBM:FireCustomEvent("DBM_EncounterEnd", 15687, "Moroes", wipe)
--- end
+function mod:OnCombatEnd(wipe)
+	DBM:FireCustomEvent("DBM_EncounterEnd", 15687, "Moroes", wipe)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305464) and self.vb.phase2 then
@@ -191,13 +191,11 @@ function mod:SPELL_AURA_APPLIED(args)
         if args:IsPlayer() then
 			local name = {"djeban","sexgay","cigan","hardbass","upkicks"} --танец
 			name  = name[math.random(#name)]
-			warnSound:Play(name)
         end
 	elseif args:IsSpellID(305460) then
         if self.vb.ora then
 			local name = {"ora", "muda", "atata"} --танец
 			name  = name[math.random(#name)]
-			warnSound:Play(name)
             self.vb.ora = false
             self:ScheduleMethod(5, "resetOra")
         end

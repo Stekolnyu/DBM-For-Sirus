@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"UNIT_HEALTH"
 )
-
+-- сделал разные таймера для 10 и 25 потому что видел только 10-ку --
 local warnlightningfilth 				= mod:NewCastAnnounce(317549, 2) -- анонс каста молнии скверны
 local warnhorror						= mod:NewCastAnnounce(317548, 1.5)  -- анонс каста Первобытного ужаса
 

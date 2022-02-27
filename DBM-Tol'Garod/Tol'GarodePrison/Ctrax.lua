@@ -108,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
     end
 end
 
-function mod:UNIT_HEALTH(uId)
+function mod:UNIT_HEALTH(uId)	-- перефаза по хп
 	if not warned_P1 and self:GetUnitCreatureId(uId) == 84002 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.53 and mod:IsDifficulty("heroic25") then
 		warned_P1 = true
 		warnPhase2Soon:Show()
