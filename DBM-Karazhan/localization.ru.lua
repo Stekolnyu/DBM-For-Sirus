@@ -33,23 +33,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DBM_MOROES_VANISH_FADED	= "Исчезновение рассеивается",
-	WarnPhase2Soon = "Скоро фаза 2",
+	DBM_MOROES_VANISH_FADED		= "Исчезновение рассеивается",
+	WarnPhase2Soon				= "Скоро фаза 2",
 }
 
 L:SetTimerLocalization{
-	Phase2 = "Фаза 2"
+	Phase2						= "Фаза 2",
+	Dance						= "Танцы",
+	Spree						= "Череда"
 }
 
 L:SetOptionLocalization{
-	DBM_MOROES_VANISH_FADED	= "Show vanish fade warning",
-	WarnPhase2Soon = "Предупреждать о приближении второй фазы",
-	WarnDeathMark = DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(305470, GetSpellInfo(305470) or "unknown"),
-	Phase2 = "Отсчитывать время до второй фазы."
+	DBM_MOROES_VANISH_FADED		= "Показывать предупреждение о ванише Мороуза",
+	WarnPhase2Soon				= "Предупреждать о приближении второй фазы",
+	WarnDeathMark				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(305470, GetSpellInfo(305470) or "unknown"),
+	Phase2						= "Отсчитывать время до второй фазы."
 }
 
 L:SetMiscLocalization{
-	DBM_MOROES_YELL_START	= "Хмм, неожиданные посетители. Нужно подготовиться..."
+	DBM_MOROES_YELL_START		= "Хмм, неожиданные посетители. Нужно подготовиться..."
 }
 
 
@@ -64,8 +66,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	RangeFrame			= "Показывать рендж (10)",
-	HealthFrame         = "Отображать здоровье босса и прочность щита"
+	RangeFrame				= "Показывать рендж (10)",
+	HealthFrame         	= "Отображать здоровье босса и прочность щита"
 }
 
 L:SetMiscLocalization{
@@ -86,9 +88,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	DBM_RJ_PHASE2_YELL	= "Ночь, добрая и строгая, приди! Верни мне моего Ромуло!",
-	Romulo				= "Ромуло",
-	Julianne			= "Джулианна"
+	DBM_RJ_PHASE2_YELL		= "Ночь, добрая и строгая, приди! Верни мне моего Ромуло!",
+	Romulo					= "Ромуло",
+	Julianne				= "Джулианна"
 }
 
 
@@ -103,7 +105,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	RRHIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(30753)
+	RRHIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(30753)
 }
 
 L:SetMiscLocalization{
@@ -119,17 +121,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnUnstableTar = "Нестабильная энергия на >%s<"
+	WarnUnstableTar			= "Нестабильная энергия на >%s<"
 }
 
 L:SetTimerLocalization{
-	TimerRunesBam = "Взрыв!"
+	TimerRunesBam			= "Взрыв!"
 }
 
 L:SetOptionLocalization{
-	RangeFrame			= "Показывать рендж (10)",
-	WarnUnstableTar =   DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(305309, GetSpellInfo(305309) or "unknown"),
-	TimerRunesBam = "Отсчет времени до взрыва рун"
+	RangeFrame				= "Показывать рендж (10)",
+	WarnUnstableTar			=   DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(305309, GetSpellInfo(305309) or "unknown"),
+	TimerRunesBam			= "Отсчет времени до взрыва рун"
 }
 
 L:SetMiscLocalization{

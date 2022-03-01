@@ -36,7 +36,7 @@ local specWarnGates			= mod:NewSpecialWarningYou(305403)
 local warnGates			    = mod:NewTargetAnnounce(305403, 3)
 local timerBreatheCD        = mod:NewCDTimer(13, 305407)
 
-local warnSound						= mod:NewSoundAnnounce()
+local warnSound				= mod:NewSoundAnnounce()
 
 local berserkTimer			= mod:NewBerserkTimer(540)
 
@@ -58,8 +58,15 @@ function mod:OnCombatStart(delay)
 
 end
 
-function Void()
+function mod:Void()
 	timerVoid:Start()
+end
+function mod:Phase1()
+		timerBanishPhase:Cancel()
+		self:scheduleMethod(15, "Void")
+		warningPortal:Show()
+		timerPortalPhase:Start()
+		warningBanishSoon:Schedule(56.5)
 end
 
 function mod:OnCombatEnd(wipe)
@@ -71,8 +78,8 @@ function mod:SPELL_CAST_START(args)
 		warningBreathCast:Show()
 		timerBreathCast:Start()
 	elseif args:IsSpellID(305407) then
-		if self.vb.breatheCount < 4 then
-			timerBreatheCD:Show()
+		if self.vb.breatheCount < 4 then          
+			timerBreatheCD:Show(nil, self.vb.breatheCount +1)
 			self.vb.breatheCount = self.vb.breatheCount + 1
 		else
 			self.vb.breatheCount = 0
@@ -119,10 +126,13 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.DBM_NS_EMOTE_PHASE_2 then
 		timerPortalPhase:Cancel()
-		self:UnscheduleMethod(31, "Void")
+		self:scheduleMethod(31, "Phase1")
 		warningBanish:Show()
 		timerBanishPhase:Start()
+		timerPortalPhase:Schedule(31)
 		warningPortalSoon:Schedule(26)
+		timerVoid:Cancel()
+		self.vb.breatheCount = 0
 	elseif msg == L.DBM_NS_EMOTE_PHASE_1 then
 		timerBanishPhase:Cancel()
 		self:scheduleMethod(15, "Void")
