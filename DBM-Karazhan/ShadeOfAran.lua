@@ -88,7 +88,6 @@ function mod:SPELL_CAST_START(args)
 		timerSpecialHeroic:Start()
 	elseif args:IsSpellID(305326) then
 		if args.destName == UnitName("player") then
-			warnSound:Play("run")
 			specWarnFreeze:Show()
 		end
 	elseif args:IsSpellID(305331) then

@@ -116,9 +116,6 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305345) then
 		warningHandCast:Show()
 		timerHandCD:Start()
-		if args:IsPlayer() then
-            warnSound:Play("fireinthe")
-		end
 	end
 end
 
@@ -129,7 +126,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				WarnMark:Show(args.destName)
 			elseif self.vb.tolik then
 				self.vb.tolik = false
-				warnSound:Play("tobecon")
 				self:ScheduleMethod(2, "resetTolik")
 			end
 			if args:IsPlayer() then
@@ -149,8 +145,3 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_CAST_FAILED(args)
-    if args.sourceName == L.name then
-        warnSound:Play("noice")                  -- Slurp.Klick.Noice
-    end
-end

@@ -107,10 +107,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305464) and self.vb.phase2 then
-		warnSound:Play("taa")
 		timerPierceCD:Start()
 	elseif args:IsSpellID(305463) and self.vb.phase2 then
-		warnSound:Play("sha")
 		timerWoundCD:Start()
 	elseif args:IsSpellID(305472) then -- танец
 		warnDanceSoon:Show(17)
@@ -123,7 +121,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(305470) then -- метка
 		if args:IsPlayer() then
 			specWarnMark:Show()
-			warnSound:Play("omaeva")
 		end
 		warnDeathMark:Show(args.destName)
 		timerDeathMark:Start(args.destName)

@@ -104,7 +104,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.wipe(gatesTargets)
 		end
 	elseif args:IsSpellID(305408, 305409) then
-		warnSound:Play("run")
 		timerRepentance:Start()
 		timerPortals:Start()
 		timerNormalPhase:Start()

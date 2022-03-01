@@ -107,13 +107,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnFlame:Show()
-			warnSound:Play("impruved")
 		end
 	elseif args:IsSpellID(305435) then
 		timerCurseCD:Start(self.vb.phaseCounter == 2 and 30 or 20)
-		if args:IsPlayer() then
-			warnSound:Play("bomb_p")
-		end
 	elseif args:IsSpellID(305429) then
 		PorchTargets[#PorchTargets + 1] = args.destName
 		self:ScheduleMethod(0.1, "SetPorchIcons")
@@ -124,11 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-    if args:IsSpellID(305435) and args:IsPlayer() then
-        warnSound:Play("bomb_d")
-	end
-end
+
 
 
 function mod:UNIT_HEALTH(uId)

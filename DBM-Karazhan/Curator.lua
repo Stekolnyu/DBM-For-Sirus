@@ -79,11 +79,6 @@ mod.vb.ter = true
 mod.vb.isinCombat = false
 
 
-function mod:bombDefused()
-    warnSound:Play("bomb_d")
-end
-
-
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("normal10") then
 		DBM:FireCustomEvent("DBM_EncounterStart", 15691, "The Curator")
@@ -165,13 +160,11 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305296) then
 		self.vb.ter = true
-		warnSound:Play("bomb_p")
         self:ScheduleMethod(6 ,"bombDefused")
 		specWarnRunes:Show()
 		timerRunesCD:Start()
 		timerRunesBam:Start()
 	elseif args:IsSpellID(305312) then
-		warnSound:Play("optics_online")
 		timerAnnihilationCD:Start()
 	end
 end
@@ -180,7 +173,6 @@ function mod:SPELL_CAST_SUCCESS(args)
     if args:IsSpellID(305298) then
         self:UnscheduleMethod("bombDefused")
         if self.vb.ter then
-            warnSound:Play("terror_wins")
             self.vb.ter = false
         end
     end

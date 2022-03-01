@@ -27,6 +27,5 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305535) then
 		timerMagicCD:Start()
-		warnSound:Play("djeep")
 	end
 end

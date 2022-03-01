@@ -149,7 +149,6 @@ end
 
 function mod:UNIT_HEALTH(uId)
 	if (self:GetUnitCreatureId(uId) == 15550 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.52 and self.vb.phaseCounter) then -- фаза
-		warnSound:Play("idisuda")
 		self.vb.phaseCounter = false
 		warnPhase2Soon:Show()
 	end
