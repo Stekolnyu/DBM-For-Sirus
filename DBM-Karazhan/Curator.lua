@@ -160,7 +160,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(305296) then
 		self.vb.ter = true
-        self:ScheduleMethod(6 ,"bombDefused")
 		specWarnRunes:Show()
 		timerRunesCD:Start()
 		timerRunesBam:Start()
@@ -171,7 +170,6 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
     if args:IsSpellID(305298) then
-        self:UnscheduleMethod("bombDefused")
         if self.vb.ter then
             self.vb.ter = false
         end

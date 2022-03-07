@@ -11,6 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS",
 	"PLAYER_REGEN_DISABLED_AND_MESSAGE"
 )
 
@@ -54,15 +55,10 @@ function mod:phase2warn()
 	self:ScheduleMethod(2, "phase2")
 end
 
-function mod:Spree()
-	timerSpreeCD:Start(85)
-	
-end
-
 function mod:phase2()
 	warnPhase2:Show()
 	self.vb.phase = 2
-	timerSpreeCD:start(79)
+	timerSpreeCD:Start(79)
 	timerDanceCD:Cancel()
 end
 
@@ -117,6 +113,12 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_CAST_SUCCESS(args)	--SPELL_CAST_SUCCESS,0xF130003D47000471,"Мороуз",0x110a48,0x0000000000000000,nil,0x80000000,305460,"Череда убийств",0x1
+	if args:IsSpellID(305460) then
+		timerSpreeCD:Start()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(305470) then -- метка
 		if args:IsPlayer() then
@@ -140,10 +142,6 @@ function mod:SPELL_AURA_APPLIED(args)
             self.vb.ora = false
             self:ScheduleMethod(5, "resetOra")
         end
-	elseif args:IsSpellID(305461) then -- череда
-			timerSpreeCD:Start()
-		elseif args:IsSpellID(305460) then -- череда
-			timerSpreeCDTest:Start()
     end
 end
 

@@ -38,7 +38,7 @@ function mod:OnCombatStart(delay)
 		timerHateStrike:Start(20)
 		timerStunningBlow:Start(15)
 	elseif mod:IsDifficulty("normal25") or mod:IsDifficulty("normal10") then
-		timerEarthStrikeCD:Start(35)
+		timerEarthStrikeCD:Start(30)
 		timerRockCD:Start(28)
 		rockCounter = 1
 	end
@@ -91,3 +91,4 @@ function mod:SPELL_AURA_REMOVED(args)	-- печь неактивна
 		timerFurnaceInactive:Start()
 	end
 end
+
