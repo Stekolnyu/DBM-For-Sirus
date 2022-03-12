@@ -2,26 +2,6 @@ if GetLocale() ~= "ruRU" then return end
 
 local L
 
--- Норигорн
-L = DBM:GetModLocalization("Norigorn")
-
-L:SetGeneralLocalization{
-	name = "Норигорн"
-}
-
-L:SetMiscLocalization{
-}
-
--- Квест
-L = DBM:GetModLocalization("Quest")
-
-L:SetGeneralLocalization{
-	name = "Контракты"
-}
-
-L:SetMiscLocalization{
-}
-
 -- Гогонаш
 L = DBM:GetModLocalization("Gogonash")
 

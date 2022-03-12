@@ -20,6 +20,6 @@
 
 localization.ru.lua
 
-Tol'GarodePrison\Ctrax.lua
-Tol'GarodePrison\Gogonash.lua
-Tol'GarodePrison\MagicEater.lua
+# Ctrax.lua
+Gogonash.lua
+# MagicEater.lua
