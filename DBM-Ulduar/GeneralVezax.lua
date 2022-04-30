@@ -16,28 +16,27 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnShadowCrash			= mod:NewTargetAnnounce(312978, 4) -- анонс Темное сокрушение
-local warnLeechLife				= mod:NewTargetAnnounce(312974, 3)	-- анонс Метка Безликого
+local warnShadowCrash			= mod:NewTargetAnnounce(312978, 4) -- Темное сокрушение
+local warnLeechLife				= mod:NewTargetAnnounce(312974, 3)
 
 local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear")
-local specWarnSurgeDarkness		= mod:NewSpecialWarningCast(312981, "Tank", nil, 2, 1, 2)	-- оповещение Всплеска Тьмы
-local specWarnLifeLeechYou		= mod:NewSpecialWarningYou(312974)	-- оповещение Метки Безликого
+local specWarnSurgeDarkness		= mod:NewSpecialWarningCast(312981, "Tank", nil, 2, 1, 2)
+local specWarnLifeLeechYou		= mod:NewSpecialWarningYou(312974)
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
-local timerSearingFlamesCast	= mod:NewCastTimer(2, 312977)	-- Жгучее пламя
-local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 312981, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)	-- время действия Всплеск Тьмы
-local timerNextSurgeofDarkness	= mod:NewCDTimer(62, 312981, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)	-- кд Всплеск Тьмы
-local timerSaroniteVapors		= mod:NewNextCountTimer(30, 312983, nil, nil, nil, 5)	-- Саронитовые пары
-local timerLifeLeech			= mod:NewTargetTimer(10, 312974)	-- время действия Метки Безликого
-local timerLeech				= mod:NewNextTimer(36, 312974)		-- кд Метка Безликого
-local timerCrashArrow           = mod:NewNextTimer(15,312978)	-- Темное сокрушение
+local timerEnrage				= mod:NewBerserkTimer(600)
+local timerSearingFlamesCast	= mod:NewCastTimer(2, 312977)
+local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 312981, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerNextSurgeofDarkness	= mod:NewCDTimer(62, 312981, nil, "Tank", nil, 5, nil, DBM_CORE_TANK_ICON)
+local timerSaroniteVapors		= mod:NewNextCountTimer(30, 312983, nil, nil, nil, 5)
+local timerLifeLeech			= mod:NewTargetTimer(10, 312974)
+local timerLeech				= mod:NewNextTimer(36, 312974)
+local timerCrashArrow           = mod:NewNextTimer(15,312978)
 local timerHardmode				= mod:NewTimer(195, "hardmodeSpawn", nil, nil, nil, 1)
 local yellLifeLeech				= mod:NewYell(312974)
-local yellLifeLeechFades		= mod:NewShortFadesYell(312974)
+local yellLifeLeechFades		=mod:NewShortFadesYell(312974)
 local yellShadowCrash			= mod:NewShortYell(312978)
-
-local timerEnrage				= mod:NewBerserkTimer(600)	-- берса
 
 mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnShadowCrash", true, false, {8})
@@ -47,7 +46,6 @@ mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without sync
 
 
 function mod:OnCombatStart(delay)
-	DBM:FireCustomEvent("DBM_EncounterStart", 33271, "GeneralVezax")
 	timerEnrage:Start(-delay)
 	timerHardmode:Start(-delay)
 	timerNextSurgeofDarkness:Start(-delay)
@@ -57,7 +55,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd(wipe)
-	DBM:FireCustomEvent("DBM_EncounterEnd", 33271, "GeneralVezax", wipe)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -189,8 +186,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:match(L.EmoteSaroniteVapors) or msg:find(L.EmoteSaroniteVapors) then
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
+	if emote == L.EmoteSaroniteVapors or emote:find(L.EmoteSaroniteVapors) then
 		self.vb.vaporsCount = self.vb.vaporsCount + 1
 		if self.vb.vaporsCount < 6 then
 			timerSaroniteVapors:Start(nil, self.vb.vaporsCount+1)

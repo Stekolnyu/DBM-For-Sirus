@@ -37,6 +37,7 @@ local warnStrela            = mod:NewTargetAnnounce(309253, 3) -- Стрела �
 local specWarnStrela	    = mod:NewSpecialWarningYou(309253, nil, nil, nil, 3, 2)
 local specWarnHeal			= mod:NewSpecialWarningInterrupt(309256, "HasInterrupt", nil, 2, 1, 2)
 local specWarnZeml			= mod:NewSpecialWarningMoveAway(309289, nil, nil, nil, 3, 5)
+local SpecialWarningKata	= mod:NewSpecialWarning("SpecialWarningKata")
 
 local timerPhaseCast        = mod:NewCastTimer(60, 309292, nil, nil, nil, 6) -- Скользящий натиск
 local timerStrelaCast		= mod:NewCastTimer(6, 309253, nil, nil, nil, 3) -- Стрела катаклизма
@@ -128,16 +129,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnNova:Show()
 		timerNovaCD:Start()
 	elseif spellId == 309253 then -- Стрела катаклизма
-		local targetname = self:GetBossTarget(21214)
-		if not targetname then return end
-		if self.Options.SetIconOnStrela then
-			self:SetIcon(targetname, 8, 6)
-		end
-		warnStrela:Show(targetname)
-		if targetname == UnitName("player") then
-			specWarnStrela:Show()
-			yellStrela:Yell()
-		end
+		self:ScheduleMethod(1.5, "strelafunc")
 		timerStrelaCD:Start()
 		timerStrelaCast:Start()
 	elseif spellId == 309256 then -- Хил
@@ -149,6 +141,27 @@ function mod:SPELL_CAST_START(args)
 		timerZemlyaCast:Start()
 		specWarnZeml:Show()
 	end
+end
+
+function mod:strelafunc()
+	local targetname = self:GetBossTarget(21214)
+		if not targetname then return end
+		if self.Options.SetIconOnStrela then
+			self:SetIcon(targetname, 8, 6)
+		end
+		warnStrela:Show(targetname)
+		if targetname == UnitName("player") then
+			specWarnStrela:Show()
+			yellStrela:Yell()
+		elseif targetname then
+			local uId = DBM:GetRaidUnitId(targetname)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 1)
+				if inRange then
+					SpecialWarningKata:Show()
+				end
+			end
+		end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
